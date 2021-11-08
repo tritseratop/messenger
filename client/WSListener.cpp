@@ -1,4 +1,5 @@
 #include "WSListener.hpp"
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // WSListener
@@ -23,7 +24,7 @@ oatpp::async::CoroutineStarter WSListener::readMessage(const std::shared_ptr<Asy
 
         auto wholeMessage = m_messageBuffer.toString();
         m_messageBuffer.clear();
-
+        std::cout << wholeMessage->c_str() << std::endl;
         OATPP_LOGD(TAG, "on message received '%s'", wholeMessage->c_str());
 
         /* Send message in reply */

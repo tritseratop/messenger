@@ -51,7 +51,6 @@ void run() {
     });
     test_handler.join();
     executor->join();
-    
 }
 
 int main() {

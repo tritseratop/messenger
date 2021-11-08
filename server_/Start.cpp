@@ -1,7 +1,4 @@
-#include "controller/Controller.hpp"
-#include "AppComponent.hpp"
-#include "oatpp/network/Server.hpp"
-//#include "Chat.hpp"
+#include "WebsockServer.h"
 
 void run() {
 	AppComponent components;
@@ -17,12 +14,56 @@ void run() {
 	server.run();
 }
 
-int main() {
-	oatpp::base::Environment::init();
+void WebsockServer::run(IServerObserver* server_, ClientContainer* clients) {
+	//run();
+	AppComponent components;
+	OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router);
 
-	run();
+	auto myController = std::make_shared<Controller>();
+	myController->addEndpointsToRouter(router);
+	OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler, "http");
+	OATPP_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, connectionProvider);
 
-	oatpp::base::Environment::destroy();
+	oatpp::network::Server server(connectionProvider, connectionHandler);
 
-	return 0;
+	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
+	chat->SetTcpserver(server_);
+	chat->setClientContainer(clients);
+	OATPP_LOGI("MyApp", "Server running on port %s", connectionProvider->getProperty("port").getData());
+	server.run();
 }
+	
+Result WebsockServer::sendToAll(const std::string& message) {
+	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
+	chat->sendMessageToAllAsync(oatpp::String(message.c_str()));
+	return Result::Success;
+}
+
+void WebsockServer::SetServer(IServerObserver* server) {
+	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
+	chat->SetTcpserver(server);
+}
+
+void WebsockServer::setClientContainer(ClientContainer* clientContainer) {
+	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
+	chat->setClientContainer(clientContainer);
+}
+
+void WebsockServer::popWaiting() {
+	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
+	chat->popWaiting();
+}
+
+
+
+//int main() {
+//	oatpp::base::Environment::init();
+//
+//	//run();
+//	WebsockServer server;
+//	server.run();
+//
+//	oatpp::base::Environment::destroy();
+//
+//	return 0;
+//}

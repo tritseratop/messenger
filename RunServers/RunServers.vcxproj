@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c1876902-32f5-485f-8477-542746b8b8af}</ProjectGuid>
-    <RootNamespace>server</RootNamespace>
+    <ProjectGuid>{2da41199-47f0-43f9-b379-9e1fcbc5f039}</ProjectGuid>
+    <RootNamespace>RunServers</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -88,12 +88,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;C:\Program Files (x86)\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Program Files (x86)\oatpp-websocket\lib\oatpp-1.2.5\oatpp-websocket.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp-test.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp.lib;wsock32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -118,12 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Develop\network cpp_\vs2019\messenger_oatpp\include;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;C:\Program Files (x86)\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;D:\Develop\network cpp_\vs2019\messenger_oatpp\server_;D:\Develop\network cpp_\vs2019\messenger_oatpp\include;D:\Develop\network cpp_\vs2019\messenger_oatpp\TCPServer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>C:\Program Files (x86)\oatpp-websocket\lib\oatpp-1.2.5\oatpp-websocket.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp-test.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp.lib;wsock32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(OutDir)TCPServer.lib;$(OutDir)server_.lib;C:\Program Files (x86)\oatpp-websocket\lib\oatpp-1.2.5\oatpp-websocket.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp-test.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp.lib;wsock32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,16 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AppComponent.hpp" />
-    <ClInclude Include="controller\Controller.hpp" />
-    <ClInclude Include="WebsockServer.h" />
-    <ClInclude Include="ws_listener\ClientListener.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Chat.cpp" />
-    <ClInclude Include="Chat.hpp" />
-    <ClCompile Include="Start.cpp" />
-    <ClCompile Include="ws_listener\ClientListener.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

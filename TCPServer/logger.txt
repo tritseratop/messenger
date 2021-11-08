@@ -1,0 +1,6 @@
+Log file info: Messenger Logger
+Log file created
+
+[2021-10-18T16:40:42] [INFO] :	Winsock API successfully initialized
+[2021-10-18T16:41:41] [INFO] :	Client #360 is connected
+[2021-10-18T16:41:52] [INFO] :	Client #360 is disconnected
