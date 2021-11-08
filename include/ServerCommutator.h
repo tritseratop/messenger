@@ -28,8 +28,6 @@ public:
 	virtual void popWaiting() = 0;
 	virtual void SetServer(IServerObserver* webserver_) = 0;
 	virtual void setClientContainer(ClientContainer* clientContainer) = 0;
-	//virtual Result moveFromWaiting() = 0;
-	//TODO destructor
 };
 
 //class INotifier {

@@ -46,8 +46,9 @@ std::string createMessageFromQueue(const std::deque<std::string>& deq) {
 
 Result Server::AddClient(Socket& client) { // TODO разобраться с копированием в функции
     if (clientContainer->addSocket(type)) {
-        client_it[client.GetSocketHandle()] = client_sockets.insert(client_sockets.end(), client);
+        clients[client.GetSocketHandle()] = client;
         FD_SET(client.GetSocketHandle(), &master);
+        client.Send("\\login " + std::to_string(client.GetSocketHandle()));
         std::string welcomeMsg = "Welcome to the Awesome Chat Server!"; // TODO receive from js
         client.Send(welcomeMsg);
 
@@ -91,6 +92,7 @@ void Server::HandleClients() {
                     int error = WSAGetLastError();
                     break;
                 }
+                
                 AddClient(client);
                 log << LOG::LOG_INFO << "Client #" + std::to_string(client.GetSocketHandle()) + " is connected";
             }
@@ -100,9 +102,11 @@ void Server::HandleClients() {
                     DeleteSocket(sock);
                 }
                 else {
-                    std::string msg_to_send = "Client #" + std::to_string(sock.GetSocketHandle()) + " " + message;
+                    std::string msg_to_send = message;
                     SendToAll(msg_to_send, sock);
-                    webserver->sendToAll(msg_to_send);
+                    if (webserver != nullptr) {
+                        webserver->sendToAll(msg_to_send);
+                    }
                 }
             }
         }
@@ -112,16 +116,16 @@ void Server::HandleClients() {
 }
 
 Result Server::SendToAll(std::string msg, const Socket& from) {
-    for (auto& s : client_sockets) {
-        if (from.GetSocketHandle() != s.GetSocketHandle()) {
+    for (auto& s : clients) {
+        if (from.GetSocketHandle() != s.second.GetSocketHandle()) {
             //std::string msg_to_send = "Client #" + std::to_string(from.GetSocketHandle()) + " " + msg;
             log << LOG::LOG_MESSAGE << msg;
             if (message_history.size() == MAX_MESSAGE_BUF_COUNT) {
                 message_history.pop_front();
             }
             message_history.push_back(msg);
-            if (s.Send(msg) != Result::Success) { // TODO use move
-                DeleteSocket(s);
+            if (s.second.Send(msg) != Result::Success) { // TODO use move
+                DeleteSocket(s.second);
             }
         }
     }
@@ -129,25 +133,24 @@ Result Server::SendToAll(std::string msg, const Socket& from) {
 }
 
 Result Server::sendToAll(const std::string& msg) {
-    for (auto& s : client_sockets) {
+    for (auto& s : clients) {
         log << LOG::LOG_MESSAGE << msg;
         if (message_history.size() == MAX_MESSAGE_BUF_COUNT) {
             message_history.pop_front();
         }
         message_history.push_back(msg);
-        if (s.Send(msg) != Result::Success) { // TODO use move
-            DeleteSocket(s);
+        if (s.second.Send(msg) != Result::Success) { // TODO use move
+            DeleteSocket(s.second);
         }
     }
     return Result::Success;
 }
 
 void Server::DeleteSocket(Socket& s) {
-    FD_CLR(s.GetSocketHandle(), &master);
     int handle = s.GetSocketHandle();
+    FD_CLR(handle, &master);
     s.Close();
-    client_sockets.erase(client_it.at(handle)); //в каком порядке?
-    client_it.erase(handle);
+    clients.erase(handle);
     log << LOG::LOG_INFO << "Client #" + std::to_string(handle) + " is disconnected";
     if (clientContainer->deleteSocket(type)) {
         popWaiting();

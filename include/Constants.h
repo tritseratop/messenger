@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 const int MAX_CLIENT_COUNT = 2;
 const int MAX_MESSAGE_BUF_COUNT = 5;
@@ -45,3 +46,11 @@ private:
 	int PORT;
 	std::string IP;
 };
+
+enum Commands {
+	LOGIN,
+	EXIT,
+	NOT_FOUND
+};
+
+const std::map<std::string, Commands> COMMANDS = { {"\login", Commands::LOGIN}, {"\exit", Commands::EXIT} };

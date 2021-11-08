@@ -34,3 +34,22 @@ Configure ParseJsonToConfig(const std::string& json) {
 
 	return Configure(d["n"].GetInt(), d["m"].GetInt(), d["port"].GetInt(), d["ip"].GetString());
 }
+
+
+void ParseMessage(const std::string& input, std::string& command, std::string& message) {
+	if (input.empty()) return;
+	size_t count = input.find(' ');
+
+	command = input.substr(1, count - 1);
+	message = input.substr(count + 1);
+}
+
+Commands GetCommand(std::string command) {
+	auto it = COMMANDS.find(command);
+	if (it != COMMANDS.end()) {
+		return it->second;
+	}
+	else {
+		return Commands::NOT_FOUND;
+	}
+}

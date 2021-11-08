@@ -40,7 +40,8 @@ private:
 	IServerObserver* webserver;
 
 	std::list<Socket> client_sockets;
-	std::map<int, std::list<Socket>::iterator> client_it;
+	std::map<int, Socket> clients;
+	std::map<int, std::string> client_logins;
 	//std::map<int, std::string> name_to_id;
 	std::queue<Socket> waiting_clients;
 	ClientContainer* clientContainer;
@@ -49,4 +50,5 @@ private:
 	Configure config;
 	size_t client_count = 0;
 	void DeleteSocket(Socket& s);
+	void DeleteSocket(int handle);
 };

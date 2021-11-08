@@ -53,5 +53,8 @@
     <ClInclude Include="..\include\Utility.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\ClientCommutator.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,12 @@
 #pragma once
 #include "IncludeMe.h"
+#include "ClientCommutator.h"
 #include <iostream>
 #include <list>
 #include <queue>
 #include <string>
 
-class Client {
+class Client : public IClient {
 public:
 	Client();
 
@@ -17,9 +18,12 @@ public:
 	Result Connect(Endpoint endpoint);
 	Result Connect();
 	Result StartChating();
+	Result setLogin(std::string login_);
+	Result defineLogin();
 private:
+	std::string genMessage(std::string message);
+	void handleCommand(std::string msg);
 	Socket main_socket;
-	std::list<Socket> client_sockets;
-	std::queue<Socket> waiting_clients; // TODO очередь ожидания
+	std::string login;
 	size_t client_count = 0;
 };

@@ -146,6 +146,7 @@
     <ClCompile Include="TCPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ClientCommutator.h" />
     <ClInclude Include="..\include\Constants.h" />
     <ClInclude Include="..\include\Endpoint.h" />
     <ClInclude Include="..\include\IncludeMe.h" />

@@ -24,7 +24,6 @@ oatpp::async::CoroutineStarter ClientListener::readMessage(const std::shared_ptr
 		OATPP_LOGD(TAG, "onMessage message ='%s'", wholeMessage->c_str());
 		m_chat->sendMessageToAllAsync(wholeMessage); // SENDING
 		return nullptr;
-		//return socket->sendOneFrameTextAsync("Hello from oatpp!: " + wholeMessage);
 	}
 	else if (size > 0) {
 		m_messageBuffer.writeSimple(data, size);

@@ -1,4 +1,5 @@
 #include "TCPClient.h"
+#include "Utility.h"
 #include <thread>
 #include <future>
 #include <iostream>
@@ -41,17 +42,52 @@ Result Client::Connect() {
 	return main_socket.Connect(Endpoint(IP, PORT));
 }
 
+Result Client::defineLogin() {
+	std::string message = "Enter your login: ";
+	while (true) {
+		std::cout << message;
+		std::string login;
+		std::getline(std::cin, login);
+		if (login.empty()) { continue; }
+		if (main_socket.Send(login) == Result::Error) {
+			int error = WSAGetLastError();
+			return Result::Error;
+		}
+		std::string response;
+		if (main_socket.Recv(response) == Result::Error) {
+			int error = WSAGetLastError();
+			return Result::Error;
+		}
+		if (response == login) { 
+			return Result::Success; 
+		}
+		else {
+			message = "This login has already used.\nPlease, enter new login: ";
+		}
+	}
+}
+
+Result Client::setLogin(std::string login_) {
+	login = login_;
+	return Result::Success;
+}
+
 // ÆÈÅÑÒÜ
 Result Client::StartChating() {
 	std::thread native_thread = std::thread(
 		[this]() {
 			while (true) {
-				std::string* message = new std::string();
-				if (main_socket.Recv(*message) == Result::Error) {
+				std::string message;
+				if (main_socket.Recv(message) == Result::Error) {
 					int error = WSAGetLastError();
 					return;
 				}
-				std::cout << *message << std::endl;
+				if (message[0] == '\\') {
+					handleCommand(message);
+				}
+				else {
+					std::cout << message << std::endl;
+				}
 			}
 		}
 	);
@@ -59,12 +95,27 @@ Result Client::StartChating() {
 	while (true) {
 		send_msg = "hello";
 		std::getline(std::cin, send_msg);
-		if (main_socket.Send(send_msg) == Result::Error) {
+		if (main_socket.Send(genMessage(send_msg)) == Result::Error) {
 			int error = WSAGetLastError();
-			native_thread.join();
 			return Result::Error;
 		}
 	}
 	native_thread.join();
 	return Result::Error;
+}
+
+void Client::handleCommand(std::string msg) {
+	std::string command, login;
+	ParseMessage(msg, command, login);
+	switch (GetCommand(command)) {
+	case Commands::LOGIN:
+		setLogin(login);
+		break;
+	default:
+		return;
+	}
+}
+
+std::string Client::genMessage(std::string message) {
+	return "Client [ " + login + " ] : " + message;
 }

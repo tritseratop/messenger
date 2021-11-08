@@ -8,7 +8,6 @@ int main() {
 	WebsockServer websockserver;
 	tcpserver.setClientContainer(&clients);
 	tcpserver.SetServer(&websockserver);
-	//server.SetTcpserver(&tcpserver);
 
 	std::thread tcp_thread([](Server& tcpserver) {
 		tcpserver.Initialize();
@@ -17,11 +16,10 @@ int main() {
 		tcpserver.HandleClients();
 	}, std::ref(tcpserver));
 
-	//WebsockServer server;
 	websockserver.run(&tcpserver, &clients);
 
 	oatpp::base::Environment::destroy();
 
-	//tcp_thread.join();
+	tcp_thread.join();
 	return 0;
 }
