@@ -1,4 +1,4 @@
-#include "WSListener.hpp"
+#include "WSClient.hpp"
 #include "AppComponent.hpp"
 
 #include "oatpp-websocket/WebSocket.hpp"
@@ -55,7 +55,8 @@ void run() {
 
 int main() {
     oatpp::base::Environment::init();
-    run();
+    WSClient client;
+    client.run();
     oatpp::base::Environment::destroy();
     return 0;
 }

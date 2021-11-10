@@ -4,6 +4,8 @@
 #include <string>
 #include <set>
 #include <queue>
+#include <mutex>
+#include <atomic>
 
 enum ServerType {
 	TCP,
@@ -12,14 +14,21 @@ enum ServerType {
 
 class ClientContainer {
 public:
-	int activeClientNumber;
-	int clientId;
 	bool addSocket(ServerType type);
 	bool deleteSocket(ServerType type);
+	void updateMessageHistory(const std::string& msg);
+	std::deque<std::string> getMessageHistory();
 
 	ClientContainer() : activeClientNumber(0) {}
 private:
-	std::queue<ServerType> waitingClients;	// waiting websocket clients
+	std::atomic<int> activeClientNumber;
+	std::atomic<int> clientId;
+
+	std::queue<ServerType> waitingClients;	// waiting common clients
+	std::deque<std::string> messageHistory;
+
+	std::mutex m_changeWaiting;
+	std::mutex m_changeHistory;
 };
 
 class IServerObserver {

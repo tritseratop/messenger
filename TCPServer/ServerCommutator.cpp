@@ -8,7 +8,10 @@ bool ClientContainer::addSocket(ServerType type) {
 		return isAdded;
 	}
 	else {
-		waitingClients.push(type);
+		{
+			std::lock_guard<std::mutex> m(m_changeWaiting);
+			waitingClients.push(type);
+		}
 		bool isAdded = false;
 		return isAdded;
 	}
@@ -22,7 +25,27 @@ bool ClientContainer::deleteSocket(ServerType type) {
 	}
 	else {
 		bool isReadyToAdd = waitingClients.front() == type;
-		waitingClients.pop();
+		{
+			std::lock_guard<std::mutex> m(m_changeWaiting);
+			waitingClients.pop();
+		}
 		return isReadyToAdd;
 	}
+}
+
+void ClientContainer::updateMessageHistory(const std::string& msg) {
+	if (messageHistory.size() == MAX_MESSAGE_BUF_COUNT) {
+		{
+			std::lock_guard<std::mutex> m(m_changeHistory);
+			messageHistory.pop_front();
+		}
+	}
+	{
+		std::lock_guard<std::mutex> m(m_changeWaiting);
+		messageHistory.push_back(msg);
+	}
+}
+
+std::deque<std::string> ClientContainer::getMessageHistory() {
+	return messageHistory;
 }

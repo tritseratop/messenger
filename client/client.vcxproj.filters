@@ -15,18 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppComponent.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="WSListener.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AppComponent.hpp">
+    <ClInclude Include="WSClient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Start.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="WSListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Start.cpp">
+    <ClCompile Include="..\include\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WSClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

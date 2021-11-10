@@ -118,13 +118,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;D:\Develop\network cpp_\vs2019\messenger_oatpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>C:\Program Files (x86)\oatpp-websocket\lib\oatpp-1.2.5\oatpp-websocket.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp-test.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp.lib;wsock32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,10 +148,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AppComponent.hpp" />
+    <ClInclude Include="WSClient.hpp" />
     <ClInclude Include="WSListener.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\Utility.cpp" />
     <ClCompile Include="Start.cpp" />
+    <ClCompile Include="WSClient.cpp" />
     <ClCompile Include="WSListener.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

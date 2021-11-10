@@ -22,7 +22,7 @@ oatpp::async::CoroutineStarter ClientListener::readMessage(const std::shared_ptr
 		auto wholeMessage = m_messageBuffer.toString();
 		m_messageBuffer.clear();
 		OATPP_LOGD(TAG, "onMessage message ='%s'", wholeMessage->c_str());
-		m_chat->sendMessageToAllAsync(wholeMessage); // SENDING
+		m_chat->sendMessageToAllAsync(clientId, wholeMessage); // SENDING
 		return nullptr;
 	}
 	else if (size > 0) {
@@ -34,21 +34,25 @@ oatpp::async::CoroutineStarter ClientListener::readMessage(const std::shared_ptr
 void ClientListener::sendMessageAsync(const oatpp::String& message) {
 	class SendMessageCoroutine : public oatpp::async::Coroutine<SendMessageCoroutine> {
 	private:
+		oatpp::async::Lock* m_lock;
 		std::shared_ptr<AsyncWebSocket> websocket;
 		oatpp::String message;
 	public:
-		SendMessageCoroutine(const std::shared_ptr<AsyncWebSocket> socket, const oatpp::String& message = "Hello")
-			: websocket(socket)
+		SendMessageCoroutine(oatpp::async::Lock* lock,
+							 const std::shared_ptr<AsyncWebSocket> socket, 
+							 const oatpp::String& message = "Hello")
+			: m_lock(lock)
+			, websocket(socket)
 			, message(message)
 		{}
 
 		Action act() override {
-			return websocket->sendOneFrameTextAsync(message).next(finish());
+			return oatpp::async::synchronize(m_lock, websocket->sendOneFrameTextAsync(message)).next(finish());
 		}
 	};
 
 	if (m_socket) {
-		m_asyncExecutor->execute<SendMessageCoroutine>(m_socket, message);
+		m_asyncExecutor->execute<SendMessageCoroutine>(&m_writeLock, m_socket, message);
 	}
 }
 

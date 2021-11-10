@@ -5,6 +5,7 @@
 #include "oatpp/network/ConnectionProvider.hpp"
 #include "oatpp-websocket/AsyncWebSocket.hpp"
 #include "oatpp/core/macro/component.hpp"
+#include "oatpp/core/async/Lock.hpp"
 
 class Chat;
 
@@ -17,6 +18,7 @@ private:
 	Chat* m_chat;
 	v_int64 clientId;
 	oatpp::data::stream::ChunkedBuffer m_messageBuffer;
+	oatpp::async::Lock m_writeLock;
 private:
 	OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, m_asyncExecutor);
 	OATPP_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, m_serverConnectionProvider);

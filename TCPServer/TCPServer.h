@@ -12,7 +12,7 @@
 
 class Server : public IServerObserver {
 public:
-	Server();
+	Server(logger::FileLogger& log_);
 
 	void Initialize();	// bool
 	void Shutdown();	// void
@@ -33,7 +33,7 @@ private:
 	ServerType type = ServerType::TCP;
 
 	std::ofstream file;
-	logger::FileLogger log;
+	logger::FileLogger& log;
 
 	fd_set master;
 	Socket main_socket;

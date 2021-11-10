@@ -3,6 +3,7 @@
 
 #include "ws_listener/ClientListener.hpp"
 #include "ServerCommutator.h"
+#include "logger/Logger.h"
 #include <map>
 #include <queue>
 
@@ -14,6 +15,7 @@ private:
 	static constexpr const char* TAG = "Server_WSInstanceListener";
 	std::map<v_int64, std::shared_ptr<ClientListener>> idToClient;
 	std::queue<std::shared_ptr<ClientListener::AsyncWebSocket>> waitingClient;
+	std::mutex m_writeMessage;
 public:
 	static std::atomic<v_int32> SOCKETS; // for id generation
 public:
@@ -25,6 +27,7 @@ public:
 	std::shared_ptr<ClientListener> getClientById(v_int64 id);
 
 	void sendMessageToAllAsync(const oatpp::String& message);
+	void sendMessageToAllAsync(v_int64 source_id, const oatpp::String& message);
 
 	void onAfterCreate_NonBlocking(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket, const std::shared_ptr<const ParameterMap>& params) override;
 	void onBeforeDestroy_NonBlocking(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket) override;

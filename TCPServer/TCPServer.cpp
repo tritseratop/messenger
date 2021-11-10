@@ -6,9 +6,6 @@
 
 using LOG = logger::FileLogger::e_logType;
 
-void ServerClientHandler(SOCKET client) {
-}
-
 void Server::Initialize() {
     WSADATA wsadata;
     int result = WSAStartup(MAKEWORD(2, 2), &wsadata);
@@ -35,15 +32,6 @@ void Server::Close() {
     main_socket.Close();
 }
 
-std::string createMessageFromQueue(const std::deque<std::string>& deq) {
-    std::string res;
-    for (const auto& d : deq) {
-        res += d + "\n";
-    }
-    res.pop_back();
-    return res;
-}
-
 Result Server::AddClient(Socket& client) { // TODO разобраться с копированием в функции
     if (clientContainer->addSocket(type)) {
         clients[client.GetSocketHandle()] = client;
@@ -52,8 +40,8 @@ Result Server::AddClient(Socket& client) { // TODO разобраться с копированием в 
         std::string welcomeMsg = "Welcome to the Awesome Chat Server!"; // TODO receive from js
         client.Send(welcomeMsg);
 
-        if (!message_history.empty()) {
-            client.Send(createMessageFromQueue(message_history));
+        if (!clientContainer->getMessageHistory().empty()) {
+            client.Send(createMessageFromQueue(clientContainer->getMessageHistory()));
         }
         return Result::Success;
     }
@@ -116,14 +104,11 @@ void Server::HandleClients() {
 }
 
 Result Server::SendToAll(std::string msg, const Socket& from) {
+    clientContainer->updateMessageHistory(msg);
     for (auto& s : clients) {
         if (from.GetSocketHandle() != s.second.GetSocketHandle()) {
             //std::string msg_to_send = "Client #" + std::to_string(from.GetSocketHandle()) + " " + msg;
             log << LOG::LOG_MESSAGE << msg;
-            if (message_history.size() == MAX_MESSAGE_BUF_COUNT) {
-                message_history.pop_front();
-            }
-            message_history.push_back(msg);
             if (s.second.Send(msg) != Result::Success) { // TODO use move
                 DeleteSocket(s.second);
             }
@@ -135,10 +120,6 @@ Result Server::SendToAll(std::string msg, const Socket& from) {
 Result Server::sendToAll(const std::string& msg) {
     for (auto& s : clients) {
         log << LOG::LOG_MESSAGE << msg;
-        if (message_history.size() == MAX_MESSAGE_BUF_COUNT) {
-            message_history.pop_front();
-        }
-        message_history.push_back(msg);
         if (s.second.Send(msg) != Result::Success) { // TODO use move
             DeleteSocket(s.second);
         }
@@ -160,8 +141,8 @@ void Server::DeleteSocket(Socket& s) {
     }
 }
 
-Server::Server()
-    : log("Messenger Logger")
+Server::Server(logger::FileLogger& log_)
+    : log(log_)
 {
     SetConfig("D:/Develop/nodejs/vs2019/messenger_with_debug/build/Debug/config.json");
     //TODO delete

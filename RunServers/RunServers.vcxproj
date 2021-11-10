@@ -118,12 +118,16 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;D:\Develop\network cpp_\vs2019\messenger_oatpp\server_;D:\Develop\network cpp_\vs2019\messenger_oatpp\include;D:\Develop\network cpp_\vs2019\messenger_oatpp\TCPServer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(OutDir)TCPServer.lib;$(OutDir)server_.lib;C:\Program Files (x86)\oatpp-websocket\lib\oatpp-1.2.5\oatpp-websocket.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp-test.lib;C:\Program Files (x86)\oatpp\lib\oatpp-1.2.5\oatpp.lib;wsock32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

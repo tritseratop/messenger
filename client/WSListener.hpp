@@ -4,6 +4,9 @@
 #include "oatpp-websocket/ConnectionHandler.hpp"
 #include "oatpp-websocket/AsyncWebSocket.hpp"
 #include "oatpp-websocket/Connector.hpp"
+#include "Utility.h"
+
+class WSClient;
 
 /**
  * WebSocket listener listens on incoming WebSocket events.
@@ -17,13 +20,29 @@ private:
      * Buffer for messages. Needed for multi-frame messages.
      */
     oatpp::data::stream::ChunkedBuffer m_messageBuffer;
+    std::string login;
+    WSClient* client;
 public:
 
     /*WSListener(std::mutex& writeMutex)
         : m_writeMutex(writeMutex)
     {}*/
 
+    /*WSListener(std::mutex& writeMutex) : m_writeMutex(writeMutex){}
+
+    WSListener(WSClient* client_, std::mutex& writeMutex)
+        : client(client_) 
+        , m_writeMutex(writeMutex)
+    {}*/
     WSListener() {}
+
+    WSListener(WSClient* client_)
+        : client(client_)
+    {}
+
+    void handleCommand(std::string msg);
+    void setLogin(std::string login_);
+    std::string getLogin();
 
     /**
      * Called on "ping" frame.
@@ -52,13 +71,13 @@ private:
     std::shared_ptr<oatpp::websocket::AsyncWebSocket> m_socket;
     oatpp::String m_message;
 public:
-    ClientSenderCoroutine(const std::shared_ptr<oatpp::websocket::AsyncWebSocket>& socket, oatpp::String message = "Hello from client")
+    ClientSenderCoroutine(const std::shared_ptr<oatpp::websocket::AsyncWebSocket>& socket, oatpp::String message = "Hello")
         : m_socket(socket)
         , m_message(message)
     {}
     Action act() override {
         //return m_socket->sendOneFrameTextAsync("hello").next(yieldTo(&ClientSenderCoroutine::act));
-        return m_socket->sendOneFrameTextAsync(m_message).next(finish());
+        return m_socket->sendOneFrameTextAsync(m_message).next(finish()); // TODO падает исключение иногда. Защитить mutex
     }
 };
 
@@ -68,10 +87,17 @@ public:
 private:
     std::shared_ptr<oatpp::websocket::AsyncWebSocket> m_socket;
     std::shared_ptr<oatpp::websocket::Connector> m_connector;
+    WSClient* client;
 public:
     ClientCoroutine(const std::shared_ptr<oatpp::websocket::Connector>& connector)
         : m_connector(connector)
         , m_socket(nullptr)
+    {}
+
+    ClientCoroutine(const std::shared_ptr<oatpp::websocket::Connector>& connector, WSClient* client_)
+        : m_connector(connector)
+        , m_socket(nullptr)
+        , client(client_)
     {}
     Action act() override;
     Action onConnected(const std::shared_ptr<oatpp::data::stream::IOStream>& connection);
