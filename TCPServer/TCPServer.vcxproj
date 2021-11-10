@@ -117,7 +117,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-      <AdditionalIncludeDirectories>C:\Program Files %28x86%29\oatpp-websocket\include\oatpp-1.2.5\oatpp-websocket;D:\Develop\network cpp_\vs2019\messenger_oatpp\client;D:\Develop\network cpp_\vs2019\messenger_oatpp\include;C:\Program Files %28x86%29\oatpp\include\oatpp-1.2.5\oatpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MessengerLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
@@ -146,22 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Constants.h" />
-    <ClInclude Include="..\include\Endpoint.h" />
-    <ClInclude Include="..\include\IncludeMe.h" />
-    <ClInclude Include="..\include\ParserInclude.h" />
-    <ClInclude Include="..\include\Result.h" />
-    <ClInclude Include="..\include\ServerCommutator.h" />
-    <ClInclude Include="..\include\Socket.h" />
-    <ClInclude Include="..\include\Utility.h" />
     <ClInclude Include="TCPServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\Endpoint.cpp" />
-    <ClCompile Include="..\include\Socket.cpp" />
-    <ClCompile Include="..\include\Utility.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ServerCommutator.cpp" />
     <ClCompile Include="TCPServer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

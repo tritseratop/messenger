@@ -16,10 +16,12 @@ private:
 	std::map<v_int64, std::shared_ptr<ClientListener>> idToClient;
 	std::queue<std::shared_ptr<ClientListener::AsyncWebSocket>> waitingClient;
 	std::mutex m_writeMessage;
+	logger::FileLogger* log;
 public:
 	static std::atomic<v_int32> SOCKETS; // for id generation
 public:
-	void addClient(const std::shared_ptr<ClientListener>& client);
+	Chat();
+	bool addClient(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket);
 	void popWaiting();
 	void SetTcpserver(IServerObserver* server);
 	void setClientContainer(ClientContainer* clients);

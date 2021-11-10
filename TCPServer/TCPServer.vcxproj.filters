@@ -13,57 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Файлы заголовков\include">
-      <UniqueIdentifier>{7581b7f1-3085-438f-a93b-9d511cc5054b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TCPServer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Utility.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Socket.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Constants.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Endpoint.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\IncludeMe.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ParserInclude.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Result.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ServerCommutator.h">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\Endpoint.cpp">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\Socket.cpp">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClCompile>
     <ClCompile Include="TCPServer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerCommutator.cpp">
-      <Filter>Файлы заголовков\include</Filter>
-    </ClCompile>
-    <ClCompile Include="..\include\Utility.cpp">
-      <Filter>Файлы заголовков</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

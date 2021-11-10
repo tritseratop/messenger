@@ -1,13 +1,10 @@
 #include "TCPServer.h"
 #include "WebsockServer.h"
-#include "logger/Logger.h"
 
 int main() {
-	logger::FileLogger log("Messenger Logger");
-
 	oatpp::base::Environment::init();
 	ClientContainer clients;
-	Server tcpserver(log);
+	Server tcpserver;
 	WebsockServer websockserver;
 	tcpserver.setClientContainer(&clients);
 	tcpserver.SetServer(&websockserver);

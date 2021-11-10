@@ -3,19 +3,37 @@
 
 using LOG = logger::FileLogger::e_logType;
 
-void Chat::addClient(const std::shared_ptr<ClientListener>& client) {
-	idToClient[client->getClientId()] = client;
-	if (!clientContainer->getMessageHistory().empty()) {
-		std::lock_guard<std::mutex> m(m_writeMessage);
-		client->sendMessageAsync(oatpp::String(createMessageFromQueue(clientContainer->getMessageHistory()).c_str()));
+Chat::Chat() {
+	log = logger::FileLogger::getInstance("Message logger");
+}
+
+bool Chat::addClient(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket) {
+	if (clientContainer->addSocket(type)) {
+		auto client = std::make_shared<ClientListener>(socket, this, SOCKETS++);
+		socket->setListener(client);
+		std::string msg = "\\login " + std::to_string(client->getClientId());
+		{
+			std::lock_guard<std::mutex> m(m_writeMessage);
+			client->sendMessageAsync(oatpp::String(msg.c_str()));
+		}
+		*log << LOG::LOG_INFO << "Client #" + std::to_string(client->getClientId()) + " is connected";
+
+		idToClient[client->getClientId()] = client;
+		if (!clientContainer->getMessageHistory().empty()) {
+			std::lock_guard<std::mutex> m(m_writeMessage);
+			client->sendMessageAsync(oatpp::String(createMessageFromQueue(clientContainer->getMessageHistory()).c_str()));
+		}
+		return true;
+	}
+
+	else {
+		return false;
 	}
 }
 
 void Chat::popWaiting() {
 	if (!waitingClient.empty()) {
-		auto client = std::make_shared<ClientListener>(waitingClient.front(), this, SOCKETS++);
-		waitingClient.front()->setListener(client);
-		addClient(client);
+		addClient(waitingClient.front());
 		waitingClient.pop();
 	}
 }
@@ -29,6 +47,7 @@ void Chat::setClientContainer(ClientContainer* clients) {
 }
 
 void Chat::removeClientById(v_int64 id) {
+	*log << LOG::LOG_INFO << "Client #" + std::to_string(id) + " is disconnected";
 	if (idToClient.count(id) != 0) {
 		idToClient.erase(id);
 	}
@@ -44,13 +63,13 @@ std::shared_ptr<ClientListener> Chat::getClientById(v_int64 id) {
 void Chat::sendMessageToAllAsync(v_int64 source_id, const oatpp::String& message) {
 	clientContainer->updateMessageHistory(message->std_str());
 	tcpserver->sendToAll(message.get()->std_str());
-
 	std::lock_guard<std::mutex> m(m_writeMessage);
 	for (auto& pair : idToClient) {
 		if (pair.first != source_id) {
 			pair.second->sendMessageAsync(message);
 		}
 	}
+	*log << LOG::LOG_MESSAGE << message.get()->std_str();
 }
 
 void Chat::sendMessageToAllAsync(const oatpp::String& message) {
@@ -64,18 +83,9 @@ std::atomic<v_int32> Chat::SOCKETS(0);
 
 void Chat::onAfterCreate_NonBlocking(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket, const std::shared_ptr<const ParameterMap>& params) {
 	OATPP_LOGD(TAG, "New incoming connection. Connection count = %d", SOCKETS.load());
-	if (clientContainer->addSocket(type)) {
-		auto client = std::make_shared<ClientListener>(socket, this, SOCKETS++);
-		socket->setListener(client);
-		std::string msg = "\\login " + std::to_string(client->getClientId());
-		{
-			std::lock_guard<std::mutex> m(m_writeMessage);
-			client->sendMessageAsync(oatpp::String(msg.c_str()));
-		}
-		addClient(client);
-	}
-	else {
+	if (!addClient(socket)) {
 		waitingClient.push(socket);
+		*log << LOG::LOG_INFO << "WS client #NULL is added to waiting";
 	}
 }
 void Chat::onBeforeDestroy_NonBlocking(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket) {

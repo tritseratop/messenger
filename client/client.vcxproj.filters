@@ -32,9 +32,6 @@
     <ClCompile Include="WSListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\include\Utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WSClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
