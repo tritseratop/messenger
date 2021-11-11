@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server_", "server_\server_.vcxproj", "{C1876902-32F5-485F-8477-542746B8B8AF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25392E61-E78E-4153-826B-4B1777800458} = {25392E61-E78E-4153-826B-4B1777800458}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{8B1A3DF2-6B20-48C7-A936-D0B0B3AEF07A}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -30,6 +33,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MessengerLib", "MessengerLib\MessengerLib.vcxproj", "{25392E61-E78E-4153-826B-4B1777800458}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RunClient", "RunClient\RunClient.vcxproj", "{ABE0DA95-549B-4C96-B8E0-6186EE6CAC2E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25392E61-E78E-4153-826B-4B1777800458} = {25392E61-E78E-4153-826B-4B1777800458}
+		{912344C4-23E7-4123-8731-B2940039CAD0} = {912344C4-23E7-4123-8731-B2940039CAD0}
+		{8B1A3DF2-6B20-48C7-A936-D0B0B3AEF07A} = {8B1A3DF2-6B20-48C7-A936-D0B0B3AEF07A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

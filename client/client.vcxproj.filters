@@ -26,9 +26,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Start.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WSListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

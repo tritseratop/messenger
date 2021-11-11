@@ -8,7 +8,7 @@
 
 class Client : public IClient {
 public:
-	Client();
+	Client(const Configure& config_) : config(config_) {}
 
 	Result Initialize();	// bool
 	Result Shutdown();	// void
@@ -25,4 +25,5 @@ private:
 	Socket main_socket;
 	std::string login;
 	size_t client_count = 0;
+	const Configure config;
 };

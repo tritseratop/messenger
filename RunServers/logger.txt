@@ -1,11 +1,8 @@
-5	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 1
-6	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 2
-7	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 3
-8	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 4
-9	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 5
-10	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 6
-11	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 7
-12	[2021-11-11T17:08:33] [MSG] :	Client [ 420	] : 8
-13	[2021-11-11T17:08:33] [MSG] :	Client [ 420	] : 9
-14	[2021-11-11T17:08:34] [MSG] :	Client [ 420	] : 0
-15	[2021-11-11T17:08:36] [INF] :	Client #420 is disconnected
+1	[2021-11-11T17:39:46] [INF] :	Log file created
+2	[2021-11-11T17:39:46] [INF] :	Log file info: Messenger Logger
+3	[2021-11-11T17:39:46] [INF] :	Winsock API successfully initialized
+4	[2021-11-11T17:39:55] [INF] :	Client #424 is connected
+5	[2021-11-11T17:40:04] [INF] :	Client #0 is connected
+6	[2021-11-11T17:40:06] [MSG] :	Client [ 0	] : sdflksd;kf
+7	[2021-11-11T17:40:09] [MSG] :	Client [ 424	] : asdfasdfadf
+8	[2021-11-11T17:40:13] [INF] :	Client #424 is disconnected

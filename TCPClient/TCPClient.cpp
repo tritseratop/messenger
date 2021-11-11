@@ -4,8 +4,6 @@
 #include <future>
 #include <iostream>
 
-Client::Client() {}
-
 Result Client::Initialize() {
 	WSADATA wsadata;
 	int result = WSAStartup(MAKEWORD(2, 2), &wsadata);
@@ -39,7 +37,7 @@ Result Client::Connect(Endpoint endpoint) {
 }
 
 Result Client::Connect() {
-	return main_socket.Connect(Endpoint(IP, PORT));
+	return main_socket.Connect(Endpoint(config.TCP_HOST.c_str(), config.TCP_PORT));
 }
 
 Result Client::defineLogin() {

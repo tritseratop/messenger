@@ -13,7 +13,7 @@
 
 void WSClient::run() {
     oatpp::base::Environment::init();
-	AppComponent component;
+	AppComponent component(config);
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, connectionProvider);
     OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
 
@@ -46,7 +46,7 @@ void WSClient::setLogin(std::string login_) {
 }
 
 void WSClient::runWithoutCoroutine() {
-    AppComponent component;
+    AppComponent component(config);
     OATPP_COMPONENT(std::shared_ptr<oatpp::network::ClientConnectionProvider>, connectionProvider);
     OATPP_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor);
 

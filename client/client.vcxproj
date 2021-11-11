@@ -152,7 +152,6 @@
     <ClInclude Include="WSListener.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Start.cpp" />
     <ClCompile Include="WSClient.cpp" />
     <ClCompile Include="WSListener.cpp" />
   </ItemGroup>

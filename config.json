@@ -2,7 +2,7 @@
   "m": 5,
   "n": 3,
   "tcphost": "127.0.0.1",
-  "tcpport": 1111,
+  "tcpport": 1112,
   "wshost": "localhost",
-  "wsport": 8000
+  "wsport": 8001
 }
