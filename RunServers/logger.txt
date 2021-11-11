@@ -1,9 +1,11 @@
-Log file info: Messenger Logger
-Log file created
-
-[2021-11-10T18:11:33] [INFO] :	Winsock API successfully initialized
-[2021-11-10T18:11:40] [INFO] :	Client #424 is connected
-[2021-11-10T18:11:45] [INFO] :	Client #428 is connected
-[2021-11-10T18:11:48] [MESSAGE] :	Client [ 428 ] : 111
-[2021-11-10T18:11:50] [MESSAGE] :	Client [ 424 ] : 222
-[2021-11-10T18:11:55] [INFO] :	Client #424 is disconnected
+5	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 1
+6	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 2
+7	[2021-11-11T17:08:31] [MSG] :	Client [ 420	] : 3
+8	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 4
+9	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 5
+10	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 6
+11	[2021-11-11T17:08:32] [MSG] :	Client [ 420	] : 7
+12	[2021-11-11T17:08:33] [MSG] :	Client [ 420	] : 8
+13	[2021-11-11T17:08:33] [MSG] :	Client [ 420	] : 9
+14	[2021-11-11T17:08:34] [MSG] :	Client [ 420	] : 0
+15	[2021-11-11T17:08:36] [INF] :	Client #420 is disconnected

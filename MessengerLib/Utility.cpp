@@ -3,10 +3,12 @@
 Result ReadTextFile(const std::string& path, std::string& result) {
 	std::ifstream file(path);
 	if (file.is_open()) {
-		std::string buf;
+		std::string buf; // TODO
 		buf.reserve(50);
 		result.reserve(50);
-		while (std::getline(file, result)) {}
+		while (std::getline(file, buf)) {
+			result += buf;
+		}
 		file.close();
 		return Result::Success;
 	}
@@ -23,14 +25,30 @@ Configure ParseJsonToConfig(const std::string& json) {
 	assert(d["n"].IsInt());
 	assert(d.HasMember("m"));
 	assert(d["m"].IsInt());
-	assert(d.HasMember("port"));
-	assert(d["port"].IsInt());
-	assert(d.HasMember("ip"));
-	assert(d["ip"].IsString());
+	assert(d.HasMember("tcphost"));
+	assert(d["tcphost"].IsString());
+	assert(d.HasMember("tcpport"));
+	assert(d["tcpport"].IsInt());
+	assert(d.HasMember("wshost"));
+	assert(d["wshost"].IsString());
+	assert(d.HasMember("wsport"));
+	assert(d["wsport"].IsInt());
+	auto s = d["tcphost"].GetString();
 
-	return Configure(d["n"].GetInt(), d["m"].GetInt(), d["port"].GetInt(), d["ip"].GetString());
+	Configure conf(d["n"].GetInt(), d["m"].GetInt()
+		, d["tcphost"].GetString(), d["tcpport"].GetInt()
+		, d["wshost"].GetString(), d["wsport"].GetInt());
+	return conf;
 }
 
+Configure SetConfig(const std::string& path) {
+	std::string json;
+	if (ReadTextFile(path, json) == Result::Success) {
+		Configure config(ParseJsonToConfig(json));
+		return config;
+	}
+	return Configure();
+}
 
 void ParseMessage(const std::string& input, std::string& command, std::string& message) {
 	if (input.empty()) return;
@@ -51,7 +69,7 @@ Commands GetCommand(std::string command) {
 }
 
 std::string genMessage(const std::string login, const std::string& message) {
-	return "Client [ " + login + " ] : " + message;
+	return "Client [ " + login + "\t] : " + message;
 }
 
 std::string createMessageFromQueue(const std::deque<std::string>& deq) {

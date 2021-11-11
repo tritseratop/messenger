@@ -59,7 +59,7 @@ Result Server::StartListen(Endpoint endpoint) {
 }
 
 void Server::StartListen() {
-    main_socket.Listen(config.getIp(), config.getPort());
+    main_socket.Listen(config.TCP_HOST, config.TCP_PORT);
     return;
 }
 
@@ -139,10 +139,9 @@ void Server::DeleteSocket(Socket& s) {
     }
 }
 
-Server::Server()
+Server::Server(const Configure& config_) : config(config_)
 {
-    log = logger::FileLogger::getInstance("Messenger Logger");
-    SetConfig("D:/Develop/nodejs/vs2019/messenger_with_debug/build/Debug/config.json");
+    log = logger::FileLogger::getInstance();
     //TODO delete
     //webserver.se("TCP server connected");
 }
@@ -163,9 +162,3 @@ void Server::popWaiting() {
     }
 }
 
-void Server::SetConfig(const std::string& path) {
-    std::string json;
-    if (ReadTextFile(path, json) == Result::Success) {
-        config = ParseJsonToConfig(json);
-    }
-}

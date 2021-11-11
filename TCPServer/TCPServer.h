@@ -12,7 +12,7 @@
 
 class Server : public IServerObserver {
 public:
-	Server();
+	Server(const Configure& config);
 
 	void Initialize();	// bool
 	void Shutdown();	// void
@@ -26,7 +26,6 @@ public:
 	void StartListen();
 	void HandleClients();
 	Result AddClient(Socket& client);
-	void SetConfig(const std::string& path);
 	Result SendToAll(std::string msg, const Socket& from);
 	virtual Result sendToAll(const std::string& msg) override;
 private:
@@ -47,7 +46,7 @@ private:
 	ClientContainer* clientContainer;
 
 	std::deque<std::string> message_history;
-	Configure config;
+	const Configure config;
 	size_t client_count = 0;
 	void DeleteSocket(Socket& s);
 	void DeleteSocket(int handle);

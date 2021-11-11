@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcx
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCPServer", "TCPServer\TCPServer.vcxproj", "{E161614B-98B3-413D-B742-4E83CF6E9D44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25392E61-E78E-4153-826B-4B1777800458} = {25392E61-E78E-4153-826B-4B1777800458}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCPClient", "TCPClient\TCPClient.vcxproj", "{912344C4-23E7-4123-8731-B2940039CAD0}"
 	ProjectSection(ProjectDependencies) = postProject

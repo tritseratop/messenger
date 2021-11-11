@@ -140,7 +140,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\logger\Logger.h" />
     <ClInclude Include="ClientCommutator.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Endpoint.h" />
@@ -174,7 +173,6 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\logger\Logger.cpp" />
     <ClCompile Include="Endpoint.cpp" />
     <ClCompile Include="logger\Logger.cpp" />
     <ClCompile Include="ServerCommutator.cpp" />

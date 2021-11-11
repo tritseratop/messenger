@@ -19,10 +19,14 @@ public:
 	void updateMessageHistory(const std::string& msg);
 	std::deque<std::string> getMessageHistory();
 
-	ClientContainer() : activeClientNumber(0) {}
+	ClientContainer(int max_count) 
+		: activeClientNumber(0)
+		, MAX_CLIENT_COUNT(max_count)
+	{}
 private:
 	std::atomic<int> activeClientNumber;
 	std::atomic<int> clientId;
+	const int MAX_CLIENT_COUNT;
 
 	std::queue<ServerType> waitingClients;	// waiting common clients
 	std::deque<std::string> messageHistory;

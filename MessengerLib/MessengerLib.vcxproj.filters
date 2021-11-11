@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\logger\Logger.h">
-      <Filter>Header Files\Logger</Filter>
-    </ClInclude>
     <ClInclude Include="ClientCommutator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\include\logger\Logger.cpp">
-      <Filter>Header Files\Logger</Filter>
-    </ClCompile>
     <ClCompile Include="Endpoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -131,11 +125,11 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="logger\Logger.cpp">
-      <Filter>Header Files\Logger</Filter>
-    </ClCompile>
     <ClCompile Include="ServerCommutator.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logger\Logger.cpp">
+      <Filter>Header Files\Logger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

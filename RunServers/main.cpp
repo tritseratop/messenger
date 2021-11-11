@@ -1,11 +1,14 @@
 #include "TCPServer.h"
 #include "WebsockServer.h"
+#include "Utility.h"
 
 int main() {
+	Configure configure(SetConfig("D:/Develop/network cpp_/vs2019/messenger_oatpp/config.json"));
 	oatpp::base::Environment::init();
-	ClientContainer clients;
-	Server tcpserver;
-	WebsockServer websockserver;
+	auto log = logger::FileLogger::getInstance(10, "Messenger Logger", "logger.txt");
+	ClientContainer clients(configure.MAX_CLIENT_COUNT);
+	Server tcpserver(configure);
+	WebsockServer websockserver(configure);
 	tcpserver.setClientContainer(&clients);
 	tcpserver.SetServer(&websockserver);
 

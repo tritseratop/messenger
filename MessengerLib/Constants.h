@@ -10,11 +10,24 @@ const char* const IP = "127.0.0.1";
 
 class Configure {
 public:
-	Configure(int N = 3, int M = 5, int port = 1111, std::string ip = "127.0.0.1")
+	Configure(int N = 3, int M = 5
+		, const std::string& tcphost = "127.0.0.1", int tcpport = 1111
+		, const std::string& wshost = "localhost", int wsport = 8080)
 		: MAX_CLIENT_COUNT(N)
 		, MAX_MESSAGE_BUF_COUNT(M)
-		, PORT(port)
-		, IP(ip)
+		, TCP_HOST(tcphost)
+		, TCP_PORT(tcpport)
+		, WS_HOST(wshost.c_str())
+		, WS_PORT(wsport)
+	{}
+
+	Configure(const Configure& config)
+		: MAX_CLIENT_COUNT(config.MAX_CLIENT_COUNT)
+		, MAX_MESSAGE_BUF_COUNT(config.MAX_MESSAGE_BUF_COUNT)
+		, TCP_HOST(config.TCP_HOST)
+		, TCP_PORT(config.TCP_PORT)
+		, WS_HOST(config.WS_HOST)
+		, WS_PORT(config.WS_PORT)
 	{}
 
 	/*Configure& operator= (const Configure& config) {
@@ -40,11 +53,14 @@ public:
 	std::string getIp() const {
 		return IP;
 	}
-private:
+
+public:
 	int MAX_CLIENT_COUNT;
 	int MAX_MESSAGE_BUF_COUNT;
-	int PORT;
-	std::string IP;
+	std::string TCP_HOST;
+	int TCP_PORT;
+	std::string WS_HOST;
+	int WS_PORT;
 };
 
 enum Commands {

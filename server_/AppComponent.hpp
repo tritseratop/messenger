@@ -9,7 +9,11 @@
 #include "oatpp/core/macro/component.hpp"
 
 class AppComponent {
+private:
+	const Configure config;
 public:
+	AppComponent(const Configure& config_) : config(config_) {}
+
 	// создает асинхронный executor
 	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::async::Executor>, executor)([] {
 		return std::make_shared<oatpp::async::Executor>(
@@ -19,9 +23,12 @@ public:
 			);
 		}());
 
+	
 	// создает компонент, который слушает порт
-	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
-		return oatpp::network::tcp::server::ConnectionProvider::createShared({ "localhost", 8000, oatpp::network::Address::IP_4 });
+	OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([this] {
+		return oatpp::network::tcp::server::ConnectionProvider::createShared(
+			{ config.WS_HOST.c_str(), static_cast<v_uint16>(config.WS_PORT), oatpp::network::Address::IP_4 }
+			);
 		}());
 
 	// создает роутер
@@ -54,6 +61,7 @@ public:
 		connectionHanler->setSocketInstanceListener(chat);
 		return connectionHanler;
 		}());
+
 };
 
 #endif // !AppComponent_hpp

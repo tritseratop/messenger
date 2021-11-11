@@ -4,7 +4,7 @@
 using LOG = logger::FileLogger::e_logType;
 
 Chat::Chat() {
-	log = logger::FileLogger::getInstance("Message logger");
+	log = logger::FileLogger::getInstance();
 }
 
 bool Chat::addClient(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket) {

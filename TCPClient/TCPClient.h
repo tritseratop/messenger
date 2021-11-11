@@ -21,7 +21,6 @@ public:
 	Result setLogin(std::string login_);
 	Result defineLogin();
 private:
-	std::string genMessage(std::string message);
 	void handleCommand(std::string msg);
 	Socket main_socket;
 	std::string login;

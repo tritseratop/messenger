@@ -95,7 +95,7 @@ Result Client::StartChating() {
 	while (true) {
 		send_msg = "hello";
 		std::getline(std::cin, send_msg);
-		if (main_socket.Send(genMessage(send_msg)) == Result::Error) {
+		if (main_socket.Send(genMessage(login, send_msg)) == Result::Error) {
 			int error = WSAGetLastError();
 			return Result::Error;
 		}
@@ -114,8 +114,4 @@ void Client::handleCommand(std::string msg) {
 	default:
 		return;
 	}
-}
-
-std::string Client::genMessage(std::string message) {
-	return "Client [ " + login + " ] : " + message;
 }
