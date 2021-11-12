@@ -1,6 +1,11 @@
-1	[2021-11-12T15:43:17] [INF] :	Log file created
-2	[2021-11-12T15:43:17] [INF] :	Log file info: Messenger Logger
-3	[2021-11-12T15:43:17] [INF] :	Winsock API successfully initialized
-4	[2021-11-12T15:43:37] [INF] :	Client #0 is connected
-5	[2021-11-12T15:43:40] [INF] :	Client #1 is connected
-6	[2021-11-12T15:43:45] [INF] :	Client #2 is added to waiting
+5	[2021-11-12T15:57:00] [INF] :	Client #1 is connected
+6	[2021-11-12T15:57:02] [MSG] :	Client [ 1	] : вап
+7	[2021-11-12T15:57:04] [MSG] :	Client [ 0	] : вап
+8	[2021-11-12T15:57:09] [INF] :	Client #2 is added to waiting
+9	[2021-11-12T15:57:11] [MSG] :	Client [ 1	] : пвап
+10	[2021-11-12T15:57:13] [MSG] :	Client [ 0	] : вап
+11	[2021-11-12T15:57:18] [INF] :	Client #1 is disconnected
+12	[2021-11-12T15:57:18] [INF] :	Client #2 is connected
+13	[2021-11-12T15:57:18] [INF] :	Client #2 is added to chat
+14	[2021-11-12T15:57:21] [MSG] :	Client [ 2	] : чпвап
+15	[2021-11-12T15:57:25] [MSG] :	Client [ 0	] : апрапр

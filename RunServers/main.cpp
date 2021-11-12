@@ -11,10 +11,11 @@ int main() {
 	WebsockServer websockserver(configure);
 	tcpserver.setClientContainer(&clients);
 	tcpserver.SetServer(&websockserver);
-	tcpserver.Initialize();
-	tcpserver.Create();
-	tcpserver.StartListen();
+	
 	std::thread tcp_thread([](Server& tcpserver) {
+		tcpserver.Initialize();
+		tcpserver.Create();
+		tcpserver.StartListen();
 		tcpserver.HandleClients();
 	}, std::ref(tcpserver));
 
