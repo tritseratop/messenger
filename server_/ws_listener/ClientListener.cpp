@@ -21,8 +21,9 @@ oatpp::async::CoroutineStarter ClientListener::readMessage(const std::shared_ptr
 	if (size == 0) {
 		auto wholeMessage = m_messageBuffer.toString();
 		m_messageBuffer.clear();
-		OATPP_LOGD(TAG, "onMessage message ='%s'", wholeMessage->c_str());
-		m_chat->sendMessageToAllAsync(clientId, wholeMessage); // SENDING
+		if (m_chat->isClienAdded(clientId)) {
+			m_chat->sendMessageToAllAsync(clientId, wholeMessage); // SENDING
+		}
 		return nullptr;
 	}
 	else if (size > 0) {

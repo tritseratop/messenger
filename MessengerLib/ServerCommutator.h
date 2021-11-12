@@ -15,6 +15,8 @@ enum ServerType {
 class ClientContainer {
 public:
 	bool addSocket(ServerType type);
+	bool addSocket(ServerType type, int& id);
+	void popWaiting();
 	bool deleteSocket(ServerType type);
 	void updateMessageHistory(const std::string& msg);
 	std::deque<std::string> getMessageHistory();
@@ -22,6 +24,7 @@ public:
 	ClientContainer(int max_count) 
 		: activeClientNumber(0)
 		, MAX_CLIENT_COUNT(max_count)
+		, clientId(0)
 	{}
 private:
 	std::atomic<int> activeClientNumber;

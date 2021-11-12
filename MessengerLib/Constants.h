@@ -65,8 +65,9 @@ public:
 
 enum Commands {
 	LOGIN,
+	WAIT,
 	EXIT,
 	NOT_FOUND
 };
 
-const std::map<std::string, Commands> COMMANDS = { {"\login", Commands::LOGIN}, {"\exit", Commands::EXIT} };
+const std::map<std::string, Commands> COMMANDS = { {"login", Commands::LOGIN}, {"exit", Commands::EXIT}, {"wait", Commands::WAIT}};

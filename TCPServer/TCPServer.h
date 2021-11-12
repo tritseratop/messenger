@@ -30,6 +30,7 @@ public:
 	virtual Result sendToAll(const std::string& msg) override;
 private:
 	ServerType type = ServerType::TCP;
+	Socket help;
 
 	std::ofstream file;
 	logger::FileLogger* log;

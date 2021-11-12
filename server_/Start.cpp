@@ -15,7 +15,6 @@ void WebsockServer::run(IServerObserver* server_, ClientContainer* clients) {
 	OATPP_COMPONENT(std::shared_ptr<Chat>, chat);
 	chat->SetTcpserver(server_);
 	chat->setClientContainer(clients);
-	OATPP_LOGI("MyApp", "Server running on port %s", connectionProvider->getProperty("port").getData());
 	server.run();
 }
 	

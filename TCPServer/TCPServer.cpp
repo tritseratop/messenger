@@ -26,6 +26,7 @@ void Server::Shutdown() { // TODO что делать с void?
 
 void Server::Create() {
     main_socket.Create();
+    help.Create();
 }
 
 void Server::Close() {
@@ -33,25 +34,20 @@ void Server::Close() {
 }
 
 Result Server::AddClient(Socket& client) { // TODO разобраться с копированием в функции
-    if (clientContainer->addSocket(type)) {
-        clients[client.GetSocketHandle()] = client;
-        FD_SET(client.GetSocketHandle(), &master);
-        client.Send("\\login " + std::to_string(client.GetSocketHandle()));
-        std::string welcomeMsg = "Welcome to the Awesome Chat Server!"; // TODO receive from js
-        client.Send(welcomeMsg);
+    clients[client.GetSocketHandle()] = client;
+    FD_SET(client.GetSocketHandle(), &master);
 
-        if (!clientContainer->getMessageHistory().empty()) {
-            client.Send(createMessageFromQueue(clientContainer->getMessageHistory()));
-        }
-        return Result::Success;
+    client.Send("\\login " + client.getLogin());
+    *log << LOG::LOG_INFO << "Client #" + client.getLogin() + " is connected";
+
+    std::string welcomeMsg = "Welcome to the Awesome Chat Server!"; // TODO receive from js
+    client.Send(welcomeMsg);
+
+    if (!clientContainer->getMessageHistory().empty()) {
+        client.Send(createMessageFromQueue(clientContainer->getMessageHistory()));
     }
-    else {
-        waiting_clients.push(client);
-        *log << LOG::LOG_INFO << "Client #" + std::to_string(client.GetSocketHandle()) + " is added to waiting";
-        std::string msg = "The maximum number of messenger clients was reached. Please wait...";
-        client.Send(msg);
-        return Result::Success;
-    }
+    return Result::Success;
+
 }
 
 Result Server::StartListen(Endpoint endpoint) {
@@ -60,12 +56,24 @@ Result Server::StartListen(Endpoint endpoint) {
 
 void Server::StartListen() {
     main_socket.Listen(config.TCP_HOST, config.TCP_PORT);
+    FD_ZERO(&master);
+    FD_SET(main_socket.GetSocketHandle(), &master);
+    fd_set copy = master;
+    std::thread sel([&copy, this]() {
+        int socket_count = select(0, &copy, nullptr, nullptr, nullptr);
+        Socket sock(copy.fd_array[0]);
+        Socket client;
+        Result res = main_socket.Accept(client);
+        });
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    help.Connect(Endpoint(config.TCP_HOST.c_str(), config.TCP_PORT));
+    sel.join();
     return;
 }
 
 void Server::HandleClients() {
-    FD_ZERO(&master);
-    FD_SET(main_socket.GetSocketHandle(), &master);
+    //FD_ZERO(&master);
+    //FD_SET(main_socket.GetSocketHandle(), &master);
 
     while (true) {
         fd_set copy = master;
@@ -76,13 +84,22 @@ void Server::HandleClients() {
                 Socket client;
                 Result res = main_socket.Accept(client);
                 if (res == Result::Error) {
-                    *log << LOG::LOG_ERROR << "Failed to connect client #" + std::to_string(client.GetSocketHandle());
+                    *log << LOG::LOG_ERROR << "Failed to connect client #" + client.getLogin();
                     int error = WSAGetLastError();
                     break;
                 }
-                
-                AddClient(client);
-                *log << LOG::LOG_INFO << "Client #" + std::to_string(client.GetSocketHandle()) + " is connected";
+                int id;
+                bool isAdded = clientContainer->addSocket(type, id);
+                client.setLogin(std::to_string(id));
+                if (isAdded) {
+                    AddClient(client);
+                }
+                else {
+                    waiting_clients.push(client);
+                    *log << LOG::LOG_INFO << "Client #" + client.getLogin() + " is added to waiting";
+                    std::string msg = "The maximum number of messenger clients was reached. Please wait...";
+                    client.Send(msg);
+                }
             }
             else {
                 std::string message;
@@ -90,10 +107,10 @@ void Server::HandleClients() {
                     DeleteSocket(sock);
                 }
                 else {
-                    std::string msg_to_send = message;
-                    SendToAll(msg_to_send, sock);
+                    if (message[0] == '\\') continue;
+                    SendToAll(message, sock);
                     if (webserver != nullptr) {
-                        webserver->sendToAll(msg_to_send);
+                        webserver->sendToAll(message);
                     }
                 }
             }
@@ -129,8 +146,8 @@ void Server::DeleteSocket(Socket& s) {
     int handle = s.GetSocketHandle();
     FD_CLR(handle, &master);
     s.Close();
+    *log << LOG::LOG_INFO << "Client #" + s.getLogin() + " is disconnected";
     clients.erase(handle);
-    *log << LOG::LOG_INFO << "Client #" + std::to_string(handle) + " is disconnected";
     if (clientContainer->deleteSocket(type)) {
         popWaiting();
     }
@@ -156,9 +173,15 @@ void Server::setClientContainer(ClientContainer* clients) {
 
 void Server::popWaiting() {
     if (!waiting_clients.empty()) {
+        clientContainer->popWaiting();
         AddClient(waiting_clients.front());
-        *log << LOG::LOG_INFO << "Client #" + std::to_string(waiting_clients.front().GetSocketHandle()) + " is added to chat";
+        *log << LOG::LOG_INFO << "Client #" + waiting_clients.front().getLogin() + " is added to chat";
         waiting_clients.pop();
+
+        if (!help.IsConnected()) {
+            help.Connect(Endpoint(config.TCP_HOST.c_str(), config.TCP_PORT));
+        }
+        help.Send("\\refresh");
     }
 }
 

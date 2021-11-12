@@ -69,7 +69,6 @@ Result Socket::Accept(Socket& outSocket) {
 		return Result::Error;
 	}
 	Endpoint newConnectionEndpoint((sockaddr*)&addr);
-	std::cout << "New connection accepted!" << std::endl;
 	outSocket = Socket(acceptedConnectionHandle);
 	return Result::Success;
 }
@@ -81,7 +80,12 @@ Result Socket::Connect(Endpoint endpoint) {
 		int error = WSAGetLastError();
 		return Result::Error;
 	}
+	isConnected = true;
 	return Result::Success;
+}
+
+bool Socket::IsConnected() {
+	return isConnected;
 }
 
 Result Socket::Send(const void* data, int numberOfBytes, int& bytesSent) {
@@ -144,4 +148,12 @@ Result Socket::Recv(std::string& message) {
 
 SOCKET Socket::GetSocketHandle() const {
 	return handle;
+}
+
+void Socket::setLogin(const std::string& login_) {
+	login = login_;
+}
+
+std::string Socket::getLogin() {
+	return login;
 }

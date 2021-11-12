@@ -17,6 +17,27 @@ bool ClientContainer::addSocket(ServerType type) {
 	}
 }
 
+bool ClientContainer::addSocket(ServerType type, int& id) {
+	id = clientId++;
+	if (activeClientNumber < MAX_CLIENT_COUNT) {
+		++activeClientNumber;
+		bool isAdded = true;
+		return isAdded;
+	}
+	else {
+		{
+			std::lock_guard<std::mutex> m(m_changeWaiting);
+			waitingClients.push(type);
+		}
+		bool isAdded = false;
+		return isAdded;
+	}
+}
+
+void ClientContainer::popWaiting() {
+	++activeClientNumber;
+}
+
 bool ClientContainer::deleteSocket(ServerType type) {
 	activeClientNumber = activeClientNumber == 0 ? 0 : activeClientNumber - 1;
 	if (waitingClients.empty()) {

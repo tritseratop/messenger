@@ -1,8 +1,6 @@
-1	[2021-11-11T17:39:46] [INF] :	Log file created
-2	[2021-11-11T17:39:46] [INF] :	Log file info: Messenger Logger
-3	[2021-11-11T17:39:46] [INF] :	Winsock API successfully initialized
-4	[2021-11-11T17:39:55] [INF] :	Client #424 is connected
-5	[2021-11-11T17:40:04] [INF] :	Client #0 is connected
-6	[2021-11-11T17:40:06] [MSG] :	Client [ 0	] : sdflksd;kf
-7	[2021-11-11T17:40:09] [MSG] :	Client [ 424	] : asdfasdfadf
-8	[2021-11-11T17:40:13] [INF] :	Client #424 is disconnected
+1	[2021-11-12T15:43:17] [INF] :	Log file created
+2	[2021-11-12T15:43:17] [INF] :	Log file info: Messenger Logger
+3	[2021-11-12T15:43:17] [INF] :	Winsock API successfully initialized
+4	[2021-11-12T15:43:37] [INF] :	Client #0 is connected
+5	[2021-11-12T15:43:40] [INF] :	Client #1 is connected
+6	[2021-11-12T15:43:45] [INF] :	Client #2 is added to waiting

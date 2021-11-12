@@ -1,6 +1,6 @@
 {
   "m": 5,
-  "n": 3,
+  "n": 2,
   "tcphost": "127.0.0.1",
   "tcpport": 1112,
   "wshost": "localhost",

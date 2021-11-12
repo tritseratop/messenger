@@ -14,18 +14,19 @@ private:
 	ServerType type = ServerType::Websocket;
 	static constexpr const char* TAG = "Server_WSInstanceListener";
 	std::map<v_int64, std::shared_ptr<ClientListener>> idToClient;
-	std::queue<std::shared_ptr<ClientListener::AsyncWebSocket>> waitingClient;
+	std::queue<std::shared_ptr<ClientListener>> waitingClient;
 	std::mutex m_writeMessage;
 	logger::FileLogger* log;
 public:
 	static std::atomic<v_int32> SOCKETS; // for id generation
 public:
 	Chat();
-	bool addClient(const std::shared_ptr<ClientListener::AsyncWebSocket>& socket);
+	void addClient(const std::shared_ptr<ClientListener>& socket);
 	void popWaiting();
 	void SetTcpserver(IServerObserver* server);
 	void setClientContainer(ClientContainer* clients);
 	void removeClientById(v_int64 id);
+	bool isClienAdded(v_int64 id);
 	std::shared_ptr<ClientListener> getClientById(v_int64 id);
 
 	void sendMessageToAllAsync(const oatpp::String& message);
